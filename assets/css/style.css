@@ -1,0 +1,18 @@
+.character {
+    border: 3px solid green;
+    height: 150px;
+    width: 150px;
+    background: blue;
+    text-align: center;
+}
+
+.image-container {
+    height: 100px;
+    width: 100px;
+    background-size: cover; 
+}
+
+/* .character-image img {
+    height: 80px;
+    width: 80px;
+} */
