@@ -1,7 +1,10 @@
 body {
-    background-image: url('/assets/images/wallpaper.jpg');
+    background-image: url('/assets/images/wallpaper.jpg'); width: 100%; height: auot;
     background-size: cover;
     background-repeat: no-repeat;
+}
+
+.container {
 }
 .character {
     border: 3px solid green;
@@ -9,6 +12,8 @@ body {
     width: 150px;
     background: blue;
     text-align: center;
+    float: none;
+    margin: 0 auto;
 }
 
 .image-container {
@@ -19,6 +24,18 @@ body {
 
 .pointer {
     cursor: pointer;
+}
+
+.col-centered{
+    float: none;
+    margin: 0 auto;
+}
+
+#ptag {
+    color: white;
+    font-weight: bolder;
+    font-size: 30px;
+    text-align: center;
 }
 
 /* .character-image img {
