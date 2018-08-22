@@ -1,6 +1,9 @@
 var hero = '';
 var currentEnemy = '';
 
+var newHeroHP = 0;
+var newEnemyHP = 0;
+
 var heroPlacement = $('.heroPlacement');
 var enemyPlacement = $('.enemyPlacement');
 
@@ -36,13 +39,37 @@ var clear = function () {
     currentEnemyDivId = '';
 };
 
+var replaceClass1 = function() {
+    var el = $(heroDivId).find('span');
+    var newone = el.clone(true);
+    el.before(newone);
+    $('.' + el.attr('class') + ':last').remove();
+}
+
+var replaceClass2 = function() {    
+    var el2 = $(currentEnemyDivId).find('span');
+    var newone2 = el2.clone(true);
+    el2.before(newone2);
+    $('.' + el2.attr('class') + ':last').remove();
+}
+
 var attackFunction = function () {
-    var newHeroHP = heroStats['HP'] - enemyStats['counterAttackPower'];
-    var newEnemyHP = enemyStats['HP'] - heroStats['attackPower'];
+    newHeroHP = heroStats['HP'] - enemyStats['counterAttackPower'];
+    newEnemyHP = enemyStats['HP'] - heroStats['attackPower'];
     heroStats['HP'] = newHeroHP;
     enemyStats['HP'] = newEnemyHP;
-    $(heroDivId).find('span').text(newHeroHP);
-    $(currentEnemyDivId).find('span').text(newEnemyHP);
+    $('#ptag').text(`${enemyStats['name']} has done ${enemyStats['counterAttackPower']} damage to your hero.`);
+    $('#ptag2').text(`${heroStats['name']} has done ${heroStats['attackPower']} damage to ${enemyStats['name']}!`);
+
+    $(heroDivId).find('span').addClass('blurAnimation').text(newHeroHP);
+    replaceClass1();
+
+    $(currentEnemyDivId).find('span').addClass('blurAnimation2').text(newEnemyHP);
+    replaceClass2();
+
+    
+    // .css({'-webkit-animation': 'blur-out-expand 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) backwards', 'animation': 'blur-out-expand 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) backwards'});
+    
     heroStats['attackPower'] += heroStats['attackIncrement'];
 };
 
@@ -106,6 +133,8 @@ $(document).ready(function () {
     }); //closes click event
 
     $('.btn-attack').on('click', function () {
+
+
         if (hero !== '' && currentEnemy !== '') {
             attackFunction();
         }
@@ -120,6 +149,7 @@ $(document).ready(function () {
             currentEnemyDivId = '';
             $(currentEnemyDivId).empty();
             $('#ptag').text('Please select a new enemy to battle!');
+            $('#ptag2').empty();
         };
     });
 
