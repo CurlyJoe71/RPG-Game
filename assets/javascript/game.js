@@ -1,5 +1,4 @@
 var hero = '';
-
 var currentEnemy = '';
 
 var heroPlacement = $('.heroPlacement');
@@ -23,47 +22,29 @@ $('#character-2').find('span').text(character2Stats['HP']);
 $('#character-3').find('span').text(character3Stats['HP']);
 $('#character-4').find('span').text(character4Stats['HP']);
 
-//need to somehow reassign the character object to a new variable to be used in functions
+var clear = function () {
+    hero = '';
+    currentEnemy = '';
+
+    heroPlacement = $('.heroPlacement');
+    enemyPlacement = $('.enemyPlacement');
+
+    heroStats = {};
+    enemyStats = {};
+
+    heroDivId = '';
+    currentEnemyDivId = '';
+};
 
 var attackFunction = function () {
     var newHeroHP = heroStats['HP'] - enemyStats['counterAttackPower'];
     var newEnemyHP = enemyStats['HP'] - heroStats['attackPower'];
     heroStats['HP'] = newHeroHP;
     enemyStats['HP'] = newEnemyHP;
-    console.log('the new Hero HP is :' + newHeroHP);
     $(heroDivId).find('span').text(newHeroHP);
     $(currentEnemyDivId).find('span').text(newEnemyHP);
     heroStats['attackPower'] += heroStats['attackIncrement'];
-    console.log('The hero\'s new attack power is: ' + heroStats['attackPower']);
-
-}
-
-var shotsFired = function () {
-    // $('#heroHP').text(100);
-    console.log(heroHealth);
-    $('span').text(heroHealth);
 };
-
-// $('.btn-attack').on('click', attackFunction);
-
-//I think I need an object that contains the details for each character. I can store their unique ID, and HP value, and whatever else I need to store
-// const charactersObject = [
-//     [character1: [
-
-//         name: 'Akbar',
-//         ID: "$('#character-1')",
-//         heroHealth: 100,
-//         counterAttackPower: 10]
-//     ],
-// ]
-
-//function to assign power
-
-// need function to calculate damage
-
-
-
-console.log('Initial state of hero is: ' + hero);
 
 $(document).ready(function () {
 
@@ -76,14 +57,16 @@ $(document).ready(function () {
             console.log('The heroDivId is: ' + heroDivId);
 
             $(heroPlacement).append($(heroDivId));
-            $(heroDivId).find('span').css({ 'color': 'red'});
             $('#ptag').text('Select your first enemy.');
+            $(this).css({'background': 'linear-gradient(158deg, #238dd5, #eaf3e7, #8039b0)', 'background-size': '800% 800%', '-webkit-animation': 'heroColor 2s ease infinite', '-moz-animation': 'heroColor 2s ease infinite', 'animation': 'heroColor 2s ease infinite'})
+            $(this).find('span').css({'color': 'black'});
 
             //selecting the other character divs
             $('.character').not($(this)).each(function () {
-                $(this).css({ 'background': 'purple' });
+                $(this).css({ 'background': 'darkslategrey' });
+                $(this).css({ 'color': 'white'});
             });
-            
+            //attaching the proper stats to the current hero.
             switch (hero) {
                 case "character-1":
                     heroStats = character1Stats;
@@ -96,17 +79,15 @@ $(document).ready(function () {
                     break;
                 case "character-4":
                     heroStats = character4Stats;
-                }
-
-            //add way to move other characters, maybe use append?
+            };
 
         } else if (currentEnemy === '') {
             $('#ptag').text('Fight!');
-            $(this).css({ 'background': 'red' });
             currentEnemy = $(this).attr('id');
             currentEnemyDivId = '#' + currentEnemy;
             $(enemyPlacement).append($(currentEnemyDivId));
-
+            $(this).css({'background': 'linear-gradient(191deg, #a75732, #c6923a, #265810)', 'background-size': '800% 800%', '-webkit-animation': 'enemyColor 5s ease infinite', '-moz-animation': 'enemyColor 5s ease infinite', 'animation': 'enemyColor 5s ease infinite'});
+            //attaching the proper character stats to the current enemy.
             switch (currentEnemy) {
                 case "character-1":
                     enemyStats = character1Stats;
@@ -119,47 +100,28 @@ $(document).ready(function () {
                     break;
                 case "character-4":
                     enemyStats = character4Stats;
-                }
-            console.log('The current enemy is: ' + currentEnemy);
-
+            };
         } else {
         };
     }); //closes click event
-    
-    
 
-    $('.btn-attack').on('click', function() {
+    $('.btn-attack').on('click', function () {
         if (hero !== '' && currentEnemy !== '') {
             attackFunction();
         }
         if (heroStats['HP'] <= 0) {
-            alert('You lost!')
+            alert('You lost!');
+            clear();
         } else if (enemyStats['HP'] <= 0) {
-            alert('You defeated the enmey!');
+            alert(`You defeated ${enemyStats['name']}!`);
             $(currentEnemyDivId).hide();
             currentEnemy = '';
             enemyStats = {};
             currentEnemyDivId = '';
             $(currentEnemyDivId).empty();
             $('#ptag').text('Please select a new enemy to battle!');
-        }
-    })
+        };
+    });
 
-})  //closes click event
+});  //closes click event
    //closes document ready
-
-
-
-    //idea: create vaiables for each character that corresponds to their current role, i.e. "hero", "enemy", "currentEnemy" 
-    //what woud each variable do or change, exactly?
-
-    //or do I create a string value "hero" "enemy" "currentEnemy" and assign those out to each character accordingly?
-
-// Need to use if statements to run different phases of the game.
-// Phase 1 - any character will change to hero
-// Phase 2 - the other characters become enemies, change the background to red, move to lower part of screen
-//Phase 3 - choose first enemy to fight, that enemy moves to bottom of screen, use only Counter Attack number
-
-// if (phase === 1) { characters are green }
-// else if (phase === 2) {change x or y position of enemies, change color, assign "counter attack" value}
-// else {move clicked enemy to bottom, assign currentEnemy}

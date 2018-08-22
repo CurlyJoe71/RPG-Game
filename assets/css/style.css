@@ -7,10 +7,10 @@ body {
 .container {
 }
 .character {
-    border: 3px solid green;
+    border: 3px solid darkslategray;
     height: 150px;
     width: 150px;
-    background: blue;
+    background: lightpink;
     text-align: center;
     float: none;
     margin: 0 auto;
@@ -38,7 +38,54 @@ body {
     text-align: center;
 }
 
-/* .character-image img {
-    height: 80px;
-    width: 80px;
+.spacer {
+    height: 50px;
+    width: 100%;
+    display: block;
+    top: 200px;
+}
+
+span {
+    color: lightcyan;
+}
+
+/* .animate {
+    background: linear-gradient(191deg, #a75732, #c6923a, #459441, #0d230c);
+    background-size: 800% 800%;
+    
+    -webkit-animation: enemyColor 1s ease infinite;
+    -moz-animation: enemyColor 1s ease infinite;
+    animation: enemyColor 1s ease infinite;
 } */
+
+@-webkit-keyframes enemyColor {
+    0%{background-position:19% 0%}
+    50%{background-position:82% 100%}
+    100%{background-position:19% 0%}
+}
+@-moz-keyframes enemyColor {
+    0%{background-position:19% 0%}
+    50%{background-position:82% 100%}
+    100%{background-position:19% 0%}
+}
+@keyframes enemyColor { 
+    0%{background-position:19% 0%}
+    50%{background-position:82% 100%}
+    100%{background-position:19% 0%}
+}
+
+@-webkit-keyframes heroColor {
+    0%{background-position:0% 40%}
+    50%{background-position:100% 61%}
+    100%{background-position:0% 40%}
+}
+@-moz-keyframes heroColor {
+    0%{background-position:0% 40%}
+    50%{background-position:100% 61%}
+    100%{background-position:0% 40%}
+}
+@keyframes heroColor { 
+    0%{background-position:0% 40%}
+    50%{background-position:100% 61%}
+    100%{background-position:0% 40%}
+}
