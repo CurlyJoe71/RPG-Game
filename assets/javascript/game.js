@@ -13,6 +13,8 @@ var enemyStats = {};
 var heroDivId = '';
 var currentEnemyDivId = '';
 
+var xwingfireAudio = document.getElementById('xwingfire');
+
 //initial stats for each character
 const character1Stats = { name: 'Akbar', ID: '#character1', HP: 100, attackPower: 20, counterAttackPower: 25, attackIncrement: 5 };
 const character2Stats = { name: 'Chewbacca', ID: '#character2', HP: 150, attackPower: 20, counterAttackPower: 9, attackIncrement: 13 };
@@ -53,7 +55,22 @@ var replaceClass2 = function() {
     $('.' + el2.attr('class') + ':last').remove();
 }
 
+var replaceClass3 = function() {
+    var el3 = $(heroDivId);
+    var newone3 = el3.clone(true);
+    el3.before(newone3);
+    $('.' + el3.attr('class') + ':last').remove();
+}
+
+var replaceClass4 = function() {
+    var el4 = $(enemyPlacement);
+    var newone4 = el4.clone(true);
+    el4.before(newone4);
+    $('.' + el4.attr('class') + ':last').remove();
+}
+
 var attackFunction = function () {
+
     newHeroHP = heroStats['HP'] - enemyStats['counterAttackPower'];
     newEnemyHP = enemyStats['HP'] - heroStats['attackPower'];
     heroStats['HP'] = newHeroHP;
@@ -61,12 +78,13 @@ var attackFunction = function () {
     $('#ptag').text(`${enemyStats['name']} has done ${enemyStats['counterAttackPower']} damage to your hero.`);
     $('#ptag2').text(`${heroStats['name']} has done ${heroStats['attackPower']} damage to ${enemyStats['name']}!`);
 
+    $('.heroPlacement').addClass('tada');
+    $('.enemyPlacement').addClass('tada');
+
     $(heroDivId).find('span').addClass('blurAnimation').text(newHeroHP);
     replaceClass1();
-
     $(currentEnemyDivId).find('span').addClass('blurAnimation2').text(newEnemyHP);
     replaceClass2();
-
     
     // .css({'-webkit-animation': 'blur-out-expand 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) backwards', 'animation': 'blur-out-expand 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) backwards'});
     
@@ -77,7 +95,6 @@ $(document).ready(function () {
 
     $('.character').on('click', function () {
         if (hero === '') {
-            $(this).css({ 'background': 'yellow' });
             hero = $(this).attr('id');
             heroDivId = '#' + hero;
             console.log('The current hero is: ' + hero);
@@ -85,12 +102,12 @@ $(document).ready(function () {
 
             $(heroPlacement).append($(heroDivId));
             $('#ptag').text('Select your first enemy.');
-            $(this).css({'background': 'linear-gradient(158deg, #238dd5, #eaf3e7, #8039b0)', 'background-size': '800% 800%', '-webkit-animation': 'heroColor 2s ease infinite', '-moz-animation': 'heroColor 2s ease infinite', 'animation': 'heroColor 2s ease infinite'})
+            $(this).css({'border': '3px solid hsla(309, 100%, 32%, 1)', 'background': 'linear-gradient(158deg, #238dd5, #eaf3e7, #8039b0)', 'background-size': '800% 800%', '-webkit-animation': 'heroColor 2s ease infinite', '-moz-animation': 'heroColor 2s ease infinite', 'animation': 'heroColor 2s ease infinite'})
             $(this).find('span').css({'color': 'black'});
 
             //selecting the other character divs
             $('.character').not($(this)).each(function () {
-                $(this).css({ 'background': 'darkslategrey' });
+                $(this).css({ 'border': '3px solid darkred', 'background': 'hsla(344, 100%, 19%, 0.72)' });
                 $(this).css({ 'color': 'white'});
             });
             //attaching the proper stats to the current hero.
@@ -113,7 +130,7 @@ $(document).ready(function () {
             currentEnemy = $(this).attr('id');
             currentEnemyDivId = '#' + currentEnemy;
             $(enemyPlacement).append($(currentEnemyDivId));
-            $(this).css({'background': 'linear-gradient(191deg, #a75732, #c6923a, #265810)', 'background-size': '800% 800%', '-webkit-animation': 'enemyColor 5s ease infinite', '-moz-animation': 'enemyColor 5s ease infinite', 'animation': 'enemyColor 5s ease infinite'});
+            $(this).css({'border': '3px solid red', 'background': 'linear-gradient(191deg, #a75732, #600, #265810)', 'background-size': '800% 800%', '-webkit-animation': 'enemyColor 5s ease infinite', '-moz-animation': 'enemyColor 5s ease infinite', 'animation': 'enemyColor 5s ease infinite'});
             //attaching the proper character stats to the current enemy.
             switch (currentEnemy) {
                 case "character-1":
@@ -129,13 +146,20 @@ $(document).ready(function () {
                     enemyStats = character4Stats;
             };
         } else {
-        };
+        }; 
     }); //closes click event
 
     $('.btn-attack').on('click', function () {
 
-
+        
         if (hero !== '' && currentEnemy !== '') {
+            xwingfireAudio.play();
+            setTimeout(function() {
+                $('.heroPlacement').removeClass('tada');
+            }, 1500); 
+            setTimeout(function() {
+                $('.enemyPlacement').removeClass('tada');
+            }, 1500); 
             attackFunction();
         }
         if (heroStats['HP'] <= 0) {
