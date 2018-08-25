@@ -176,6 +176,8 @@ $(document).ready(function () {
             if (enemyCount <= 0) {
                 alert('You killed all of the enemies! You\'re a badass!');
                 $(currentEnemyDivId).hide();
+                $('#ptag').text('Great job!');
+                $('#ptag2').text('The universe is once again safe.');
                 xwingfireAudio.pause();
                 xwingexplodeAudio.play();
             } 
