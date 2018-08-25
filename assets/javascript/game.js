@@ -19,10 +19,10 @@ var xwingexplodeAudio = document.getElementById('xwingexplode');
 var enemyCount = 3;
 
 //initial stats for each character
-const character1Stats = { name: 'Akbar', ID: '#character1', HP: 100, attackPower: 20, counterAttackPower: 25, attackIncrement: 5 };
-const character2Stats = { name: 'Chewbacca', ID: '#character2', HP: 150, attackPower: 20, counterAttackPower: 9, attackIncrement: 13 };
-const character3Stats = { name: 'Boba Fett', ID: '#Character3', HP: 175, attackPower: 10, counterAttackPower: 3, attackIncrement: 6 };
-const character4Stats = { name: 'Palpatine', ID: '#character4', HP: 200, attackPower: 30, counterAttackPower: 10, attackIncrement: 7 };
+const character1Stats = { name: 'Akbar', ID: '#character1', HP: 100, attackPower: 8, counterAttackPower: 5, attackIncrement: 5 };
+const character2Stats = { name: 'Chewbacca', ID: '#character2', HP: 120, attackPower: 8, counterAttackPower: 9, attackIncrement: 6 };
+const character3Stats = { name: 'Boba Fett', ID: '#Character3', HP: 150, attackPower: 8, counterAttackPower: 20, attackIncrement: 4 };
+const character4Stats = { name: 'Palpatine', ID: '#character4', HP: 180, attackPower: 8, counterAttackPower: 25, attackIncrement: 1 };
 
 //displaying initial HP stats for each character
 $('#character-1').find('span').text(character1Stats['HP']);
@@ -170,6 +170,10 @@ $(document).ready(function () {
         if (heroStats['HP'] <= 0) {
             alert('You lost!');
             clear();
+            $('#ptag').empty();
+            $('#ptag2').empty();
+            $('#ptag').html('<button class="btn restart">Restart</button>');
+            $('.restart').click(location.reload(true));
         }
         else if (enemyStats['HP'] <= 0) {
             enemyCount--;
