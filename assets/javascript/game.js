@@ -14,6 +14,9 @@ var heroDivId = '';
 var currentEnemyDivId = '';
 
 var xwingfireAudio = document.getElementById('xwingfire');
+var xwingexplodeAudio = document.getElementById('xwingexplode');
+
+var enemyCount = 3;
 
 //initial stats for each character
 const character1Stats = { name: 'Akbar', ID: '#character1', HP: 100, attackPower: 20, counterAttackPower: 25, attackIncrement: 5 };
@@ -41,28 +44,28 @@ var clear = function () {
     currentEnemyDivId = '';
 };
 
-var replaceClass1 = function() {
+var replaceClass1 = function () {
     var el = $(heroDivId).find('span');
     var newone = el.clone(true);
     el.before(newone);
     $('.' + el.attr('class') + ':last').remove();
 }
 
-var replaceClass2 = function() {    
+var replaceClass2 = function () {
     var el2 = $(currentEnemyDivId).find('span');
     var newone2 = el2.clone(true);
     el2.before(newone2);
     $('.' + el2.attr('class') + ':last').remove();
 }
 
-var replaceClass3 = function() {
+var replaceClass3 = function () {
     var el3 = $(heroDivId);
     var newone3 = el3.clone(true);
     el3.before(newone3);
     $('.' + el3.attr('class') + ':last').remove();
 }
 
-var replaceClass4 = function() {
+var replaceClass4 = function () {
     var el4 = $(enemyPlacement);
     var newone4 = el4.clone(true);
     el4.before(newone4);
@@ -70,13 +73,17 @@ var replaceClass4 = function() {
 }
 
 var attackFunction = function () {
+    if (enemyCount <= 0) {
 
+    }
     newHeroHP = heroStats['HP'] - enemyStats['counterAttackPower'];
     newEnemyHP = enemyStats['HP'] - heroStats['attackPower'];
     heroStats['HP'] = newHeroHP;
     enemyStats['HP'] = newEnemyHP;
     $('#ptag').text(`${enemyStats['name']} has done ${enemyStats['counterAttackPower']} damage to your hero.`);
     $('#ptag2').text(`${heroStats['name']} has done ${heroStats['attackPower']} damage to ${enemyStats['name']}!`);
+
+    xwingfireAudio.play();
 
     $('.heroPlacement').addClass('tada');
     $('.enemyPlacement').addClass('tada');
@@ -85,9 +92,9 @@ var attackFunction = function () {
     replaceClass1();
     $(currentEnemyDivId).find('span').addClass('blurAnimation2').text(newEnemyHP);
     replaceClass2();
-    
+
     // .css({'-webkit-animation': 'blur-out-expand 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) backwards', 'animation': 'blur-out-expand 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) backwards'});
-    
+
     heroStats['attackPower'] += heroStats['attackIncrement'];
 };
 
@@ -102,13 +109,13 @@ $(document).ready(function () {
 
             $(heroPlacement).append($(heroDivId));
             $('#ptag').text('Select your first enemy.');
-            $(this).css({'border': '3px solid hsla(309, 100%, 32%, 1)', 'background': 'linear-gradient(158deg, #238dd5, #eaf3e7, #8039b0)', 'background-size': '800% 800%', '-webkit-animation': 'heroColor 2s ease infinite', '-moz-animation': 'heroColor 2s ease infinite', 'animation': 'heroColor 2s ease infinite'})
-            $(this).find('span').css({'color': 'black'});
+            $(this).css({ 'border': '3px solid hsla(309, 100%, 32%, 1)', 'background': 'linear-gradient(158deg, #238dd5, #eaf3e7, #8039b0)', 'background-size': '800% 800%', '-webkit-animation': 'heroColor 2s ease infinite', '-moz-animation': 'heroColor 2s ease infinite', 'animation': 'heroColor 2s ease infinite' })
+            $(this).find('span').css({ 'color': 'black' });
 
             //selecting the other character divs
             $('.character').not($(this)).each(function () {
                 $(this).css({ 'border': '3px solid darkred', 'background': 'hsla(344, 100%, 19%, 0.72)' });
-                $(this).css({ 'color': 'white'});
+                $(this).css({ 'color': 'white' });
             });
             //attaching the proper stats to the current hero.
             switch (hero) {
@@ -130,7 +137,7 @@ $(document).ready(function () {
             currentEnemy = $(this).attr('id');
             currentEnemyDivId = '#' + currentEnemy;
             $(enemyPlacement).append($(currentEnemyDivId));
-            $(this).css({'border': '3px solid red', 'background': 'linear-gradient(191deg, #a75732, #600, #265810)', 'background-size': '800% 800%', '-webkit-animation': 'enemyColor 5s ease infinite', '-moz-animation': 'enemyColor 5s ease infinite', 'animation': 'enemyColor 5s ease infinite'});
+            $(this).css({ 'border': '3px solid red', 'background': 'linear-gradient(191deg, #a75732, #600, #265810)', 'background-size': '800% 800%', '-webkit-animation': 'enemyColor 5s ease infinite', '-moz-animation': 'enemyColor 5s ease infinite', 'animation': 'enemyColor 5s ease infinite' });
             //attaching the proper character stats to the current enemy.
             switch (currentEnemy) {
                 case "character-1":
@@ -146,36 +153,46 @@ $(document).ready(function () {
                     enemyStats = character4Stats;
             };
         } else {
-        }; 
+        };
     }); //closes click event
 
     $('.btn-attack').on('click', function () {
 
-        
         if (hero !== '' && currentEnemy !== '') {
-            xwingfireAudio.play();
-            setTimeout(function() {
+            setTimeout(function () {
                 $('.heroPlacement').removeClass('tada');
-            }, 1500); 
-            setTimeout(function() {
+            }, 1500);
+            setTimeout(function () {
                 $('.enemyPlacement').removeClass('tada');
-            }, 1500); 
+            }, 1500);
             attackFunction();
         }
         if (heroStats['HP'] <= 0) {
             alert('You lost!');
             clear();
-        } else if (enemyStats['HP'] <= 0) {
-            alert(`You defeated ${enemyStats['name']}!`);
+        }
+        else if (enemyStats['HP'] <= 0) {
+            enemyCount--;
+            if (enemyCount <= 0) {
+                alert('You killed all of the enemies! You\'re a badass!');
+                $(currentEnemyDivId).hide();
+                xwingfireAudio.pause();
+                xwingexplodeAudio.play();
+            } 
+            else {
             $(currentEnemyDivId).hide();
+            xwingfireAudio.pause();
+            xwingexplodeAudio.play();
+            alert(`You defeated ${enemyStats['name']}!`);
             currentEnemy = '';
             enemyStats = {};
             currentEnemyDivId = '';
             $(currentEnemyDivId).empty();
             $('#ptag').text('Please select a new enemy to battle!');
             $('#ptag2').empty();
+            };
         };
     });
 
 });  //closes click event
-   //closes document ready
+//closes document ready
