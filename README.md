@@ -1,4 +1,4 @@
-# unit-4-game
+# RPG-Game
 
 This is a fun RPG-style game that I used to exercise my jQuery skills, and CSS animation skills.
 
